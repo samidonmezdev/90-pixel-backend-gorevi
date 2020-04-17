@@ -64,6 +64,12 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
         ],
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => '90pixel.net',
+            'username' => 'challenge@90pixel.net',
+            'password' => 'ch@lleng3',
+        ]        
 
     ],
 
