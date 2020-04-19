@@ -1,43 +1,20 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Http\Controllers;
 
 use App\Imports\CategoryCollection;
 use App\Models\category;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
-use mysql_xdevapi\Exception;
 
-class addCategory implements ShouldQueue
+class deneme extends Controller
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
-
         $category=new category();
         $oldcount = $category->count();
         $disk = 'ftp';
@@ -58,30 +35,30 @@ class addCategory implements ShouldQueue
                 "totalcount" => $totalcount
             ];
             $this->sendEmail('email.success', $templatedata, $data);
-
+            return $rows;
         }
     }
 
     public function addCategoriesDatabase($rows){
         $category=new Category();
-        Log::debug(gettype($rows));
-       /* foreach ($rows[0] as $row){
-            try {
-                $category->addNewCategory($row);
-            }catch (Exception $exception){
-                $data = [
-                    "email" => "sami12gs@gmail.com",
-                    "name" => "sami dönmez",
-                    "subject" => "Görev bilgilendirmesi"
-                ];
-                $templatedata = [
-                    "code"=>$exception->getCode(),
-                    "error"=>$exception->getMessage()
-                ];
-                $this->sendEmail('email.error',$templatedata,$data);
-            }
-        }*/
-       return true;
+
+        /* foreach ($rows[0] as $row){
+             try {
+                 $category->addNewCategory($row);
+             }catch (Exception $exception){
+                 $data = [
+                     "email" => "sami12gs@gmail.com",
+                     "name" => "sami dönmez",
+                     "subject" => "Görev bilgilendirmesi"
+                 ];
+                 $templatedata = [
+                     "code"=>$exception->getCode(),
+                     "error"=>$exception->getMessage()
+                 ];
+                 $this->sendEmail('email.error',$templatedata,$data);
+             }
+         }*/
+        return true;
     }
 
     public function sendEmail($mailtemplate,$templatedata,$data){
@@ -92,7 +69,7 @@ class addCategory implements ShouldQueue
     }
 
     public function excelToAray($file){
-        $rows = Excel::toArray(new CategoryCollection(), $file, "ftp");
+        return Excel::toArray(new CategoryCollection(), $file, "ftp");
     }
 
     public function findFile($disk,$dictionary){
@@ -100,7 +77,7 @@ class addCategory implements ShouldQueue
         $actualfilevalue = 0;
         for ($i = 0; $i < count($file); $i++) {
             if (Str::contains($file[$i], 'xlsx')) {
-                 $filedatevalue = Str::before(Str::after($file[$i], "-"), ".");
+                $filedatevalue = Str::before(Str::after($file[$i], "-"), ".");
                 if (is_numeric($filedatevalue)) {
                     if ((int)$filedatevalue > $actualfilevalue)
                         $actualfilevalue = (int)$filedatevalue;
