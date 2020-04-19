@@ -64,8 +64,7 @@ class addCategory implements ShouldQueue
 
     public function addCategoriesDatabase($rows){
         $category=new Category();
-        Log::debug(gettype($rows));
-       /* foreach ($rows[0] as $row){
+       foreach ($rows[0] as $row){
             try {
                 $category->addNewCategory($row);
             }catch (Exception $exception){
@@ -80,15 +79,20 @@ class addCategory implements ShouldQueue
                 ];
                 $this->sendEmail('email.error',$templatedata,$data);
             }
-        }*/
+        }
        return true;
     }
 
     public function sendEmail($mailtemplate,$templatedata,$data){
-        Mail::send($mailtemplate,$templatedata,function($m) use ($data){
+        $mail=Mail::send($mailtemplate,$templatedata,function($m) use ($data){
             $m->to($data['email'],$data['name'])
                 ->subject($data['subject']);
         });
+        if ($mail){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function excelToAray($file){
