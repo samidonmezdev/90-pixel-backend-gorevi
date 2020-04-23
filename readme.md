@@ -31,7 +31,7 @@ FTP’de bir klasöre bir sistem tarafından otomatik olarak Excel dosyası olar
 	- [KALNOY/NESTEDSET](https://packagist.org/packages/kalnoy/nestedset)
 
 # KURULUM
--  git clone https://github.com/Bottelet/Flarepoint-crm.git
+-  git clone https://github.com/Sami-donmez/90-pixel-backend-gorevi
 - Boş bir veritabanı tablosu oluştur
 - env.example dosyasından env dosyası hazılayın
 - Veritabanı bilgilerini env dosyasına girin
