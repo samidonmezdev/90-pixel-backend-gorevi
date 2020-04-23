@@ -15,9 +15,9 @@ class Categoryİmporter implements toModel
     public function collection(array $row)
     {
         return new category([
-            'node'=>$row[0],
-            'left'=>$row[1],
-            'right'=>$row[2]
+            'node' => $row[0],
+            'left' => $row[1],
+            'right' => $row[2]
 
         ]);
     }

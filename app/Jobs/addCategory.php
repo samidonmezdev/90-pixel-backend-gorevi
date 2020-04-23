@@ -43,7 +43,7 @@ class addCategory implements ShouldQueue
         $disk = 'ftp';
         $dictionary = 'categories';
         $file = $this->findFile($disk, $dictionary);
-        $rows = $this->excelToAray($file);
+        $rows = $this->excelToArray($file);
         $check = $this->addCategoriesDatabase($rows);
         if ($check) {
             $totalcount = $category->count();
@@ -62,7 +62,8 @@ class addCategory implements ShouldQueue
         }
     }
 
-    public function addCategoriesDatabase($rows){
+    public function addCategoriesDatabase($rows)
+    {
         $category=new Category();
        foreach ($rows[0] as $row){
             try {
@@ -83,8 +84,9 @@ class addCategory implements ShouldQueue
        return true;
     }
 
-    public function sendEmail($mailtemplate,$templatedata,$data){
-        $mail=Mail::send($mailtemplate,$templatedata,function($m) use ($data){
+    public function sendEmail($mailtemplate,$templatedata,$data)
+    {
+        $mail = Mail::send($mailtemplate,$templatedata,function($m) use ($data){
             $m->to($data['email'],$data['name'])
                 ->subject($data['subject']);
         });
@@ -95,11 +97,13 @@ class addCategory implements ShouldQueue
         }
     }
 
-    public function excelToAray($file){
+    public function excelToArray($file)
+    {
         $rows = Excel::toArray(new CategoryCollection(), $file, "ftp");
     }
 
-    public function findFile($disk,$dictionary){
+    public function findFile($disk,$dictionary)
+    {
         $file = Storage::disk($disk)->files($dictionary);
         $actualfilevalue = 0;
         for ($i = 0; $i < count($file); $i++) {

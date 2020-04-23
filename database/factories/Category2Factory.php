@@ -1,22 +1,20 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-
 use App\Models\category;
 use Faker\Generator as Faker;
 
 $factory->define(category::class, function (Faker $faker) {
-    $i=category::all()->count();
-    $parentid=null;
+    $i = category::all()->count();
+    $parentid = null;
     if (1< $i and $i<5){
-        $parentid=1;
+        $parentid = 1;
     }
     if (10<$i ){
-        $parentid=rand(1,11);
+        $parentid = rand(1,11);
     }
     return [
-        "name"=>$faker->sentence,
-        "parent_id"=>$parentid
+        "name" => $faker->sentence,
+        "parent_id" => $parentid
     ];
-
 });

@@ -1,9 +1,10 @@
 <?php
 
 namespace Tests\Unit;
-use App\Models\category;
+use App;
 use PHPUnit\Framework\TestCase;
 use App\Jobs\addCategory;
+use Illuminate\Support\Facades\Mail;
 class CategoryTest extends TestCase
 {
     /**
@@ -14,12 +15,19 @@ class CategoryTest extends TestCase
     public function test_can_database_add()
     {
         $addCount=100;
-        factory(category::class, $addCount)->create();
-        $categoryCount = category::all()->count();
-        $this->assertTrue($addCount==$categoryCount);
+        factory(App\Models\category::class, $addCount)->create();
+        $categoryCount = App\Models\category::all()->count();;
+        $this->assertTrue($categoryCount>=$addCount);
     }
+    
+    public function test_can_call_hook()
+    {
+        $respone=$this->get(env('APP_URL')."/api/category-kontrol");
+        $response->assertStatus(200);
+    }
+    
     public function test_can_send_email(){
-        $addCategory=new addCategory();
+        
         $themeData=[
             "file"=>"a.xlsx",
             "addcount"=>"5",
@@ -27,10 +35,13 @@ class CategoryTest extends TestCase
         ];
         $data = [
             "email" => "sami12gs@gmail.com",
-            "name" => "sami dönmez",
+            "name" => "sami     dönmez",
             "subject" => "Görev bilgilendirmesi"
         ];
-        $check=$addCategory->sendEmail('email.success',$themeData,$data);
-        $this->assertTrue($check);
+        $mail = $this->mail("error.success",$themeData,function($m) use ($data){
+            $m->to($data['email'],$data['name'])
+                ->subject($data['subject']);
+        });
+        $this->assert(isset($mail));
     }
 }
