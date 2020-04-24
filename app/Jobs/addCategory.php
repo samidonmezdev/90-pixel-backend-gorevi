@@ -48,8 +48,8 @@ class addCategory implements ShouldQueue
         if ($check) {
             $totalcount = $category->count();
             $data = [
-                "email" => "sami12gs@gmail.com",
-                "name" => "sami dönmez",
+                "email" => "buradayim@90pixel.com",
+                "name" => "Sistem yöneticisi",
                 "subject" => "Görev bilgilendirmesi"
             ];
             $templatedata = [
@@ -58,7 +58,6 @@ class addCategory implements ShouldQueue
                 "totalcount" => $totalcount
             ];
             $this->sendEmail('email.success', $templatedata, $data);
-
         }
     }
 
@@ -70,8 +69,8 @@ class addCategory implements ShouldQueue
                 $category->addNewCategory($row);
             }catch (Exception $exception){
                 $data = [
-                    "email" => "sami12gs@gmail.com",
-                    "name" => "sami dönmez",
+                    "email" => "buradayim@90pixel.com",
+                    "name" => "sistem yöneticisi",
                     "subject" => "Görev bilgilendirmesi"
                 ];
                 $templatedata = [
@@ -115,7 +114,7 @@ class addCategory implements ShouldQueue
                 }
             }
         }
-        //$actualfilevalue = "testformat"; //test etek için kullanılıyor
+        //$actualfilevalue = "testformat"; //test etmek için kullanılıyor
         return 'categories/kategoriler-' . $actualfilevalue . ".xlsx";
     }
 }

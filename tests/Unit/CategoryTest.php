@@ -1,9 +1,9 @@
 <?php
 
 namespace Tests\Unit;
-use App;
+
 use PHPUnit\Framework\TestCase;
-use App\Jobs\addCategory;
+use \App\Jobs\addCategory;
 use Illuminate\Support\Facades\Mail;
 class CategoryTest extends TestCase
 {
@@ -15,14 +15,14 @@ class CategoryTest extends TestCase
     public function test_can_database_add()
     {
         $addCount=100;
-        factory(App\Models\category::class, $addCount)->create();
-        $categoryCount = App\Models\category::all()->count();;
+        factory(\App\Models\category::class, $addCount)->create();
+        $categoryCount = \App\Models\category::all()->count();;
         $this->assertTrue($categoryCount>=$addCount);
     }
     
     public function test_can_call_hook()
     {
-        $respone=$this->get(env('APP_URL')."/api/category-kontrol");
+        $respone=$this->get(env('APP_URL').":8000/api/category-kontrol");
         $response->assertStatus(200);
     }
     
